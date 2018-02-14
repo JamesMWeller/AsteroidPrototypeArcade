@@ -19,15 +19,17 @@ function preload() {
 }
 
 function create() {
-    game.physics.startSystem(Phaser.Physics.P2JS);
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    asteroids = game.add.group();
-    asteroids.enableBody = true;
-    asteroids.physicsBodyType = Phaser.Physics.ARCADE;
+    //asteroids = game.add.group();
+    //asteroids.enableBody = true;
+    //asteroids.physicsBodyType = Phaser.Physics.ARCADE;
+    asteroids = game.add.physicsGroup(Phaser.Physics.ARCADE);
 
-    planets = game.add.group();
-    planets.enableBody = true;
-    planets.physicsBodyType = Phaser.Physics.ARCADE;
+    //planets = game.add.group();
+    //planets.enableBody = true;
+    //planets.physicsBodyType = Phaser.Physics.ARCADE;
+    planets = game.add.physicsGroup(Phaser.Physics.ARCADE);
 
 
 
@@ -43,10 +45,11 @@ function create() {
         asteroid.body.collideWorldBounds = true;
         asteroid.inputEnabled = true;
         asteroid.input.enableDrag();
-        asteroid.body.collideWorldBounds = true;
         asteroid.input.useHandCursor = true;
         asteroid.events.onDragStart.add(onDragStart, asteroid);
         asteroid.events.onDragStop.add(onDragStop, asteroid);
+        //game.physics.arcade.overlap(asteroid, overlapCheck, this);
+        //asteroid.body.overlap(overlapCheck, this);
     }
 
     for (var i = 0; i < 1; i++) {
@@ -61,17 +64,16 @@ function create() {
 }
 
 function update() {
-    if (game.physics.arcade.collide(asteroids, asteroids)) {
+    if (game.physics.arcade.overlap(asteroids, asteroids, overlapCheck)) {
         console.log('boom');
-    }
-    if (game.physics.arcade.collide(asteroids, planets)) {
-        console.log('kaboom')
     }
 }
 
+
+
 function render() {
-    game.debug.body(asteroid);
-    game.debug.body(planet);
+    //game.debug.body(asteroid);
+    //game.debug.body(planet);
 }
 
 function randomElement() {
@@ -91,4 +93,20 @@ function onDragStop() {
     console.log("dx = " + x);
     console.log("dy = " + y);
     game.physics.arcade.moveToXY(this, x, y);
+}
+
+function overlapCheck(a, b) {
+    game.physics.enable(a, Phaser.Physics.ARCADE);
+    game.physics.enable(b, Phaser.Physics.ARCADE);
+    var x = (a.x + b.x) / 2;
+    var y = (a.y + b.y) / 2;
+    a.destroy();
+    b.destroy();
+    console.log(x + " and " + y);
+
+    //var newCircle = createOrb(0xFF0000);
+
+    //var newPlanet = planets.create(x, y, 'planet');
+    //newPlanet.x = x;
+    //newPlanet.y = y;
 }
