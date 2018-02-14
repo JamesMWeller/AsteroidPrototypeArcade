@@ -21,22 +21,19 @@ function preload() {
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    //asteroids = game.add.group();
-    //asteroids.enableBody = true;
-    //asteroids.physicsBodyType = Phaser.Physics.ARCADE;
-    asteroids = game.add.physicsGroup(Phaser.Physics.ARCADE);
+	asteroids = game.add.physicsGroup(Phaser.Physics.ARCADE);
+	planets = game.add.physicsGroup(Phaser.Physics.ARCADE);
 
-    //planets = game.add.group();
-    //planets.enableBody = true;
-    //planets.physicsBodyType = Phaser.Physics.ARCADE;
-    planets = game.add.physicsGroup(Phaser.Physics.ARCADE);
-
-
+	planets.enableBody = true;
+	asteroids.enableBody = true;
+    
 
     for (var i = 0; i < 8; i++) {
         asteroid = asteroids.create(game.world.randomX, game.world.randomY, 'asteroid')
         {
             this.worldType = randomElement();
+			enableBody = true;
+			game.physics.enable(asteroid, Phaser.Physics.ARCADE);
         };
 
         var rand = game.rnd.realInRange(1, 3);
@@ -48,8 +45,7 @@ function create() {
         asteroid.input.useHandCursor = true;
         asteroid.events.onDragStart.add(onDragStart, asteroid);
         asteroid.events.onDragStop.add(onDragStop, asteroid);
-        //game.physics.arcade.overlap(asteroid, overlapCheck, this);
-        //asteroid.body.overlap(overlapCheck, this);
+	
     }
 
     for (var i = 0; i < 1; i++) {
@@ -64,8 +60,8 @@ function create() {
 }
 
 function update() {
-    if (game.physics.arcade.overlap(asteroids, asteroids, overlapCheck)) {
-        console.log('boom');
+    if (game.physics.arcade.overlap(asteroids, asteroids, overlapDestroy)) {
+        console.log("Plz work");
     }
 }
 
@@ -95,18 +91,19 @@ function onDragStop() {
     game.physics.arcade.moveToXY(this, x, y);
 }
 
-function overlapCheck(a, b) {
-    game.physics.enable(a, Phaser.Physics.ARCADE);
-    game.physics.enable(b, Phaser.Physics.ARCADE);
-    var x = (a.x + b.x) / 2;
+function overlapDestroy(a, b) {
+
+	var boundsA = a.getBounds();
+    var boundsB = b.getBounds();
+
+	var x = (a.x + b.x) / 2;
     var y = (a.y + b.y) / 2;
-    a.destroy();
+	
+	//This is what is causing the problem
+	a.destroy();
     b.destroy();
-    console.log(x + " and " + y);
 
-    //var newCircle = createOrb(0xFF0000);
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
 
-    //var newPlanet = planets.create(x, y, 'planet');
-    //newPlanet.x = x;
-    //newPlanet.y = y;
 }
+
