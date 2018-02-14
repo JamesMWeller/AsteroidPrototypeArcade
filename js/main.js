@@ -4,6 +4,7 @@ var asteroids;
 var planets;
 var asteroid;
 var planet;
+var pendingDestroy = [];
 
 //var startLocation;
 
@@ -60,9 +61,13 @@ function create() {
 }
 
 function update() {
-    if (game.physics.arcade.overlap(asteroids, asteroids, overlapDestroy)) {
-        console.log("Plz work");
-    }
+	while (pendingDestroy.length > 0){
+		pendingDestroy.pop().destroy();
+	}
+  //  if (game.physics.arcade.overlap(asteroids, asteroids, addToPendingDestroy)) {
+      //  console.log("Plz work");
+	  game.physics.arcade.overlap(asteroids, asteroids, addToPendingDestroy);
+  //  }
 }
 
 
@@ -90,7 +95,10 @@ function onDragStop() {
     console.log("dy = " + y);
     game.physics.arcade.moveToXY(this, x, y);
 }
-
+function addToPendingDestroy(a,b){
+	pendingDestroy.push(a);
+	pendingDestroy.push(b);
+}
 function overlapDestroy(a, b) {
 
 	var boundsA = a.getBounds();
@@ -99,11 +107,9 @@ function overlapDestroy(a, b) {
 	var x = (a.x + b.x) / 2;
     var y = (a.y + b.y) / 2;
 	
-	//This is what is causing the problem
-	a.destroy();
-    b.destroy();
+	//  create new planet here
 
-    return Phaser.Rectangle.intersects(boundsA, boundsB);
+   // return Phaser.Rectangle.intersects(boundsA, boundsB);
 
 }
 
