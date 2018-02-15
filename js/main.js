@@ -6,6 +6,8 @@ var asteroid;
 var planet;
 var pendingDestroy = [];
 
+var planetLifes = 3;
+
 //var startLocation;
 
 const FIRE = "fire";
@@ -64,10 +66,12 @@ function update() {
 	while (pendingDestroy.length > 0){
 		pendingDestroy.pop().destroy();
 	}
-  //  if (game.physics.arcade.overlap(asteroids, asteroids, addToPendingDestroy)) {
-      //  console.log("Plz work");
+	if (game.physics.arcade.overlap(asteroids, planets, planetLoseLife)) {
+		console.log("test");
+	}
+	
 	  game.physics.arcade.overlap(asteroids, asteroids, addToPendingDestroy);
-  //  }
+ 
 }
 
 
@@ -113,3 +117,16 @@ function overlapDestroy(a, b) {
 
 }
 
+function planetLoseLife(){
+	if(planetLife == 0){
+	gameOver();
+	} else if(planetLife > 0)
+	{
+	planetLife = planetLife -1;	
+	}
+	
+}
+
+function gameOver(){
+	alert("Game Over!!");	
+}
