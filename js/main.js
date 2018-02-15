@@ -1,4 +1,4 @@
-game = new Phaser.Game(1920, 1080, Phaser.CANVAS, "gameDiv", { preload: preload, create: create, update: update, render: render });
+game = new Phaser.Game(1280, 720, Phaser.CANVAS, "gameDiv", { preload: preload, create: create, update: update, render: render });
 
 var asteroids;
 var planets;
