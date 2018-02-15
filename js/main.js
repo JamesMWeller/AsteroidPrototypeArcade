@@ -6,7 +6,7 @@ var asteroid;
 var planet;
 var pendingDestroy = [];
 
-var planetLifes = 3;
+var planetLife = 3;
 
 //var startLocation;
 
