@@ -32,6 +32,10 @@ function create() {
     planets.enableBody = true;
     asteroids.enableBody = true;
 
+    game.input.addPointer();
+    game.input.addPointer();
+    game.input.addPointer();
+    game.input.addPointer();
 
     text = game.add.text(16, 16, 'Your Planet has ' + planetLife + ' lives left.', { fill: '#ffffff' });
     //text2 = game.add.text(16, 16, 'lives: ' + planetLife, { fill: '#ffffff' });
