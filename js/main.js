@@ -1,4 +1,4 @@
-game = new Phaser.Game(1920, 1080, Phaser.CANVAS, "gameDiv", { preload: preload, create: create, update: update, render: render });
+game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, "gameDiv", { preload: preload, create: create, update: update, render: render });
 
 var asteroids;
 var planets;
@@ -10,8 +10,6 @@ var planetLife = 3;
 var text;
 var text2;
 
-//var startLocation;
-
 const FIRE = "fire";
 const WATER = "water";
 const EARTH = "earth";
@@ -19,6 +17,14 @@ const AIR = "air";
 const ENERGY = "energy";
 
 function preload() {
+    // window scaling
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.setShowAll();
+    window.addEventListener('resize', function () {
+        this.game.scale.refresh();
+    });
+    this.game.scale.refresh();
+    
     game.load.image('asteroid', 'images/asteroidNew.png');
     game.load.image('planet', 'images/planetNew.png');
 }
@@ -38,11 +44,9 @@ function create() {
     game.input.addPointer();
 
     text = game.add.text(16, 16, 'Your Planet has ' + planetLife + ' lives left.', { fill: '#ffffff' });
-    //text2 = game.add.text(16, 16, 'lives: ' + planetLife, { fill: '#ffffff' });
 
 
-
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < 12; i++) {
         asteroid = asteroids.create(game.world.randomX, game.world.randomY, 'asteroid')
         {
             this.worldType = randomElement();
@@ -79,11 +83,7 @@ function update() {
     }
     if (game.physics.arcade.overlap(asteroids, planets, planetLoseLife)) {
         text.text = 'Your Planet has ' + planetLife + ' lives left.';
-        //text2.text = 'Lives: ' + planetLife;
     }
-
-    //text2.x = Math.floor((planet.x + planet.width / 2) - 20);
-    //text2.y = Math.floor((planet.y + planet.height / 2) - 20);
 
     game.physics.arcade.overlap(asteroids, asteroids, addToPendingDestroy);
 
@@ -125,10 +125,6 @@ function overlapDestroy(a, b) {
 
     var x = (a.x + b.x) / 2;
     var y = (a.y + b.y) / 2;
-
-    //  create new planet here
-
-    // return Phaser.Rectangle.intersects(boundsA, boundsB);
 
 }
 
