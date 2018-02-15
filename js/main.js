@@ -1,4 +1,4 @@
-game = new Phaser.Game(1920, 1080, Phaser.CANVAS, "gameDiv", { preload: preload, create: create, update: update, render: render });
+game = new Phaser.Game(1280, 720, Phaser.CANVAS, "gameDiv", { preload: preload, create: create, update: update, render: render });
 
 var asteroids;
 var planets;
@@ -99,17 +99,3 @@ function addToPendingDestroy(a,b){
 	pendingDestroy.push(a);
 	pendingDestroy.push(b);
 }
-function overlapDestroy(a, b) {
-
-	var boundsA = a.getBounds();
-    var boundsB = b.getBounds();
-
-	var x = (a.x + b.x) / 2;
-    var y = (a.y + b.y) / 2;
-	
-	//  create new planet here
-
-   // return Phaser.Rectangle.intersects(boundsA, boundsB);
-
-}
-
