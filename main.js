@@ -5,8 +5,9 @@ var planets;
 var asteroid;
 var planet;
 var pendingDestroy = [];
-
 var planetLife = 3;
+
+var text;
 
 //var startLocation;
 
@@ -29,7 +30,9 @@ function create() {
 
 	planets.enableBody = true;
 	asteroids.enableBody = true;
-    
+	
+	
+    text = game.add.text(16, 16, 'Your Planet has ' + planetLife + ' lives left.', { fill: '#ffffff' });
 
     for (var i = 0; i < 8; i++) {
         asteroid = asteroids.create(game.world.randomX, game.world.randomY, 'asteroid')
@@ -54,7 +57,7 @@ function create() {
     for (var i = 0; i < 1; i++) {
         planet = planets.create(game.width / 2, game.height / 2, 'planet');
         planet.scale.setTo(0.3, 0.3);
-        planet.body.setCircle(180);
+        planet.body.setCircle(345, 280, 375);
         planet.body.collideWorldBounds = true;
         planet.inputEnabled = true;
         planet.input.enableDrag();
@@ -67,8 +70,9 @@ function update() {
 		pendingDestroy.pop().destroy();
 	}
 	if (game.physics.arcade.overlap(asteroids, planets, planetLoseLife)) {
-		console.log("test");
+		text.text = 'Your Planet has ' + planetLife + ' lives left.';
 	}
+	
 	
 	  game.physics.arcade.overlap(asteroids, asteroids, addToPendingDestroy);
  
@@ -117,16 +121,18 @@ function overlapDestroy(a, b) {
 
 }
 
-function planetLoseLife(){
+function planetLoseLife(a,b){
 	if(planetLife == 0){
 	gameOver();
 	} else if(planetLife > 0)
 	{
+	pendingDestroy.push(a)
 	planetLife = planetLife -1;	
 	}
 	
 }
 
 function gameOver(){
-	alert("Game Over!!");	
+	alert("Game Over!!");
+	location.reload(); 
 }
